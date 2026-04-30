@@ -91,5 +91,12 @@ export const api = {
       });
       return res.json();
     },
+    purchaseMembership: async (userId: string, tier: string) => {
+      const res = await fetch(`${BASE_URL}/user/${userId}/purchase-membership/${tier}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+      return res.json();
+    },
   },
 };

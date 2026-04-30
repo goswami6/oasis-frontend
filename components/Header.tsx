@@ -6,8 +6,10 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Menu, X, ChevronDown, Phone,
-  Share2 as Facebook, MessageSquare as Twitter, Briefcase as Linkedin, Camera as Instagram, Play as Youtube
+  Share2 as Facebook, MessageSquare as Twitter, Briefcase as Linkedin, Camera as Instagram, Play as Youtube,
+  Wallet, Crown, Calendar
 } from "lucide-react";
+import { api } from "../utility/api";
 
 const Header = () => {
   const pathname = usePathname();
@@ -16,8 +18,9 @@ const Header = () => {
   if (isAuthPage) return null;
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState<string | null>(null);
   const [user, setUser] = useState<any>(null);
+  const [walletInfo, setWalletInfo] = useState<any>(null);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   useEffect(() => {
@@ -30,7 +33,9 @@ const Header = () => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       try {
-        setUser(JSON.parse(storedUser));
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
+        fetchWalletData(parsedUser.id || parsedUser._id);
       } catch (e) {
         console.error("Failed to parse user", e);
       }
@@ -38,6 +43,17 @@ const Header = () => {
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const fetchWalletData = async (userId: string) => {
+    try {
+      const res = await api.user.getWalletBalance(userId);
+      if (res.success) {
+        setWalletInfo(res);
+      }
+    } catch (error) {
+      console.error("Wallet fetch error:", error);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -101,7 +117,7 @@ const Header = () => {
               T
             </div>
             <span className="text-xl md:text-2xl font-serif font-bold tracking-wider text-white">
-              OASIS <span className="text-primary-mist italic">MIST</span>
+              T-CAFE <span className="text-primary-mist italic">MIST</span>
             </span>
           </Link>
 
@@ -111,20 +127,20 @@ const Header = () => {
               <div
                 key={link.name}
                 className="relative group py-2"
-                onMouseEnter={() => link.dropdown && setIsDropdownOpen(true)}
-                onMouseLeave={() => link.dropdown && setIsDropdownOpen(false)}
+                onMouseEnter={() => link.dropdown && setIsDropdownOpen(link.name)}
+                onMouseLeave={() => link.dropdown && setIsDropdownOpen(null)}
               >
                 <Link
                   href={link.href}
                   className="text-[11px] font-bold text-white/90 hover:text-primary-mist transition-colors uppercase tracking-[0.2em] flex items-center gap-1"
                 >
                   {link.name}
-                  {link.dropdown && <ChevronDown size={10} className={`opacity-50 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />}
+                {link.dropdown && <ChevronDown size={10} className={`opacity-50 transition-transform ${isDropdownOpen === link.name ? 'rotate-180' : ''}`} />}
                 </Link>
 
                 {link.dropdown && (
                   <AnimatePresence>
-                    {isDropdownOpen && (
+                    {isDropdownOpen === link.name && (
                       <motion.div
                         initial={{ opacity: 0, scale: 0.95, y: 10 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -156,13 +172,20 @@ const Header = () => {
               <div className="relative">
                 <button
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
-                  className="flex items-center gap-2 bg-primary-mist/10 text-primary-mist px-4 py-2 rounded-lg font-bold text-[11px] tracking-widest uppercase border border-primary-mist/20 hover:bg-primary-mist/20 transition-all"
+                  className="flex items-center gap-2"
                 >
-                  <div className="w-5 h-5 rounded-full bg-primary-mist text-primary-deep flex items-center justify-center text-[8px]">
-                    {user.name?.[0] || 'U'}
+                  <div className="flex flex-col items-end">
+                    <span className="text-[9px] font-black text-primary-mist/60 leading-none mb-1">
+                      {walletInfo?.balance?.toLocaleString() || 0} Tokens
+                    </span>
+                    <div className="flex items-center gap-2 bg-primary-mist/10 text-primary-mist px-4 py-2 rounded-lg font-bold text-[11px] tracking-widest uppercase border border-primary-mist/20 hover:bg-primary-mist/20 transition-all">
+                      <div className="w-5 h-5 rounded-full bg-primary-mist text-primary-deep flex items-center justify-center text-[8px]">
+                        {user.name?.[0] || 'U'}
+                      </div>
+                      {user.name?.split(' ')[0]}
+                      <ChevronDown size={10} className={`transition-transform ${isProfileOpen ? 'rotate-180' : ''}`} />
+                    </div>
                   </div>
-                  {user.name?.split(' ')[0]}
-                  <ChevronDown size={10} className={`transition-transform ${isProfileOpen ? 'rotate-180' : ''}`} />
                 </button>
 
                 <AnimatePresence>
@@ -171,11 +194,54 @@ const Header = () => {
                       initial={{ opacity: 0, scale: 0.95, y: 10 }}
                       animate={{ opacity: 1, scale: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                      className="absolute top-full right-0 mt-2 w-48 bg-primary-deep/98 border border-white/10 rounded-xl overflow-hidden shadow-2xl backdrop-blur-xl"
+                      className="absolute top-full right-0 mt-2 w-72 bg-primary-deep/98 border border-white/10 rounded-2xl overflow-hidden shadow-3xl backdrop-blur-xl"
                     >
-                      <div className="p-4 border-b border-white/5">
-                        <p className="text-[10px] text-white/40 uppercase tracking-widest mb-1">Signed in as</p>
-                        <p className="text-xs font-bold text-white truncate">{user.email}</p>
+                      {/* Membership Card - Premium UI */}
+                      {walletInfo?.membershipActive ? (
+                        <div className="p-5 bg-gradient-to-br from-primary-mist/20 via-transparent to-accent-gold/10 border-b border-white/5">
+                          <div className={`p-4 rounded-xl border ${walletInfo.membershipTier === 'Platinum' ? 'border-primary-mist/30 bg-primary-mist/5' : 'border-accent-gold/30 bg-accent-gold/5'} relative overflow-hidden group`}>
+                            <div className="absolute -right-4 -top-4 w-16 h-16 bg-white/5 rounded-full blur-2xl group-hover:bg-white/10 transition-all" />
+                            <div className="flex justify-between items-start mb-4">
+                              <div>
+                                <h4 className="text-[10px] text-white/40 font-black uppercase tracking-[0.2em] mb-1">Member Status</h4>
+                                <div className="flex items-center gap-2">
+                                  <Crown size={14} className={walletInfo.membershipTier === 'Platinum' ? 'text-primary-mist' : 'text-accent-gold'} />
+                                  <span className="text-sm font-serif font-bold text-white tracking-wide">{walletInfo.membershipTier} Tier</span>
+                                </div>
+                              </div>
+                              <div className="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center text-white/40">
+                                <Linkedin size={14} />
+                              </div>
+                            </div>
+                            <div className="flex justify-between items-end">
+                              <div className="text-[9px] text-white/30 font-medium">
+                                <Calendar size={10} className="inline mr-1 mb-0.5" />
+                                Valid thru {new Date(walletInfo.membershipExpiry).toLocaleDateString()}
+                              </div>
+                              <span className="text-[10px] font-black text-primary-mist tracking-widest uppercase">Active</span>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="p-5 border-b border-white/5 text-center">
+                          <p className="text-[10px] text-white/30 uppercase tracking-[0.3em] font-black mb-3">No Active Plan</p>
+                          <Link href="/#membership">
+                            <button className="w-full py-3 bg-white/5 border border-white/10 rounded-xl text-[9px] font-black text-white hover:bg-primary-mist hover:text-primary-deep transition-all uppercase tracking-widest">
+                              Upgrade to Member
+                            </button>
+                          </Link>
+                        </div>
+                      )}
+
+                      <div className="p-4 border-b border-white/5 flex items-center justify-between">
+                        <div>
+                          <p className="text-[10px] text-white/40 uppercase tracking-widest mb-1">Signed in as</p>
+                          <p className="text-xs font-bold text-white truncate">{user.email}</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-[10px] text-white/40 uppercase tracking-widest mb-1">Tokens</p>
+                          <p className="text-xs font-black text-primary-mist">{walletInfo?.balance?.toLocaleString() || 0}</p>
+                        </div>
                       </div>
                       <div className="py-2">
                         <Link href="/profile" className="block px-4 py-2 text-[10px] text-white/60 hover:text-primary-mist hover:bg-white/5 uppercase tracking-widest">My Profile</Link>
@@ -200,13 +266,22 @@ const Header = () => {
             )}
           </div>
 
-          {/* Mobile Menu Toggle */}
-          <button
-            className="lg:hidden text-white p-2 hover:bg-white/10 rounded-lg transition-colors"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
+          {/* Mobile Menu Toggle & User Preview */}
+          <div className="lg:hidden flex items-center gap-4">
+            {user && (
+              <Link href="/profile" className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-primary-mist text-primary-deep flex items-center justify-center text-[10px] font-bold">
+                  {user.name?.[0] || 'U'}
+                </div>
+              </Link>
+            )}
+            <button
+              className="text-white p-2 hover:bg-white/10 rounded-lg transition-colors"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -214,53 +289,112 @@ const Header = () => {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            className="lg:hidden fixed top-[80px] right-0 left-0 bottom-0 bg-primary-deep/95 backdrop-blur-2xl z-[60] overflow-y-auto"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="lg:hidden fixed top-[64px] md:top-[80px] right-0 left-0 bottom-0 bg-primary-deep/98 backdrop-blur-3xl z-[60] overflow-y-auto"
           >
-            <div className="flex flex-col p-10 gap-8 min-h-screen">
-              {navLinks.map((link) => (
-                <div key={link.name} className="space-y-6">
-                  <Link
-                    href={link.href}
-                    className="text-2xl font-serif italic text-white hover:text-primary-mist tracking-tight block"
-                    onClick={() => !link.dropdown && setIsMenuOpen(false)}
-                  >
-                    {link.name}
-                  </Link>
-                  {link.dropdown && (
-                    <div className="pl-6 border-l border-white/10 flex flex-col gap-6 mt-4">
-                      {link.dropdown.map((sub) => (
-                        <Link
-                          key={sub.name}
-                          href={sub.href}
-                          className="text-sm font-light text-white/40 hover:text-primary-mist uppercase tracking-widest"
-                          onClick={() => setIsMenuOpen(false)}
-                        >
-                          {sub.name}
-                        </Link>
-                      ))}
+            <div className="flex flex-col p-8 pt-4 gap-8 min-h-screen">
+              
+              {/* User Profile Summary (Mobile) */}
+              {user && (
+                <div className="p-6 bg-white/5 rounded-3xl border border-white/10 mb-2">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-12 h-12 rounded-2xl bg-primary-mist text-primary-deep flex items-center justify-center text-xl font-bold">
+                      {user.name?.[0] || 'U'}
                     </div>
-                  )}
+                    <div>
+                      <h4 className="text-white font-serif text-lg leading-none mb-1">{user.name}</h4>
+                      <p className="text-white/40 text-[10px] uppercase tracking-widest">{user.email}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-white/5 p-3 rounded-xl border border-white/5">
+                      <p className="text-[8px] text-white/30 uppercase tracking-widest mb-1">Tokens</p>
+                      <p className="text-sm font-black text-primary-mist">{walletInfo?.balance?.toLocaleString() || 0}</p>
+                    </div>
+                    <div className="bg-white/5 p-3 rounded-xl border border-white/5">
+                      <p className="text-[8px] text-white/30 uppercase tracking-widest mb-1">Tier</p>
+                      <p className="text-sm font-black text-white">{walletInfo?.membershipTier || 'Free'}</p>
+                    </div>
+                  </div>
                 </div>
-              ))}
+              )}
 
-              <div className="mt-auto pb-20 space-y-4">
+              <div className="space-y-1">
+                {navLinks.map((link) => (
+                  <div key={link.name} className="py-2 border-b border-white/5 last:border-0">
+                    <div className="flex items-center justify-between">
+                      <Link
+                        href={link.href}
+                        className="text-xl font-serif italic text-white hover:text-primary-mist tracking-tight py-2 block"
+                        onClick={() => !link.dropdown && setIsMenuOpen(false)}
+                      >
+                        {link.name}
+                      </Link>
+                      {link.dropdown && (
+                        <button 
+                          onClick={() => setIsDropdownOpen(isDropdownOpen === link.name ? null : link.name)}
+                          className="p-2 text-white/20"
+                        >
+                          <ChevronDown size={20} className={isDropdownOpen === link.name ? 'rotate-180' : ''} />
+                        </button>
+                      )}
+                    </div>
+                    
+                    {link.dropdown && isDropdownOpen === link.name && (
+                      <motion.div 
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        className="pl-6 flex flex-col gap-4 mt-2 mb-4"
+                      >
+                        {link.dropdown.map((sub) => (
+                          <Link
+                            key={sub.name}
+                            href={sub.href}
+                            className="text-xs font-bold text-white/30 hover:text-primary-mist uppercase tracking-widest py-1"
+                            onClick={() => setIsMenuOpen(false)}
+                          >
+                            {sub.name}
+                          </Link>
+                        ))}
+                      </motion.div>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-auto pb-12 space-y-4">
                 {user ? (
-                  <button
-                    onClick={handleLogout}
-                    className="w-full border border-red-500/30 text-red-500 py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-xs"
-                  >
-                    Logout Account
-                  </button>
+                  <div className="grid grid-cols-2 gap-4">
+                    <Link href="/profile" onClick={() => setIsMenuOpen(false)} className="w-full">
+                      <button className="w-full bg-white/5 border border-white/10 text-white py-4 rounded-xl font-bold uppercase tracking-[0.2em] text-[10px]">
+                        Profile
+                      </button>
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full border border-red-500/20 text-red-400 py-4 rounded-xl font-bold uppercase tracking-[0.2em] text-[10px] bg-red-500/5"
+                    >
+                      Logout
+                    </button>
+                  </div>
                 ) : (
                   <Link href="/login" onClick={() => setIsMenuOpen(false)}>
-                    <button className="w-full bg-[#FFCC00] text-primary-deep py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-xs">
+                    <button className="w-full bg-accent-gold text-primary-deep py-4 rounded-xl font-black uppercase tracking-[0.2em] text-xs shadow-xl shadow-accent-gold/20">
                       Login / Register
                     </button>
                   </Link>
                 )}
+                
+                {/* Social Links Mobile */}
+                <div className="flex justify-center gap-6 pt-6 text-white/20">
+                  <Facebook size={18} />
+                  <Twitter size={18} />
+                  <Linkedin size={18} />
+                  <Instagram size={18} />
+                </div>
               </div>
             </div>
           </motion.div>

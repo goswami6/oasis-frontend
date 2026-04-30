@@ -81,7 +81,7 @@ const EVA = () => {
   ];
 
   return (
-    <div className="fixed bottom-10 right-10 z-[100] font-sans">
+    <div className="fixed bottom-4 right-4 md:bottom-10 md:right-10 z-[100] font-sans">
       <AnimatePresence>
         {!isOpen && (
           <motion.button
@@ -91,13 +91,13 @@ const EVA = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(true)}
-            className="w-16 h-16 bg-primary-mist text-primary-deep rounded-full shadow-[0_0_40px_rgba(123,227,214,0.4)] flex items-center justify-center relative group overflow-hidden"
+            className="w-14 h-14 md:w-16 md:h-16 bg-primary-mist text-primary-deep rounded-full shadow-[0_0_40px_rgba(123,227,214,0.4)] flex items-center justify-center relative group overflow-hidden"
           >
             <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="absolute inset-0 bg-primary-mist rounded-full animate-ping opacity-10" />
-            <Bot size={28} className="relative z-10 transition-transform group-hover:rotate-12" />
+            <Bot className="w-6 h-6 md:w-7 md:h-7 relative z-10 transition-transform group-hover:rotate-12" />
             
-            <div className="absolute -top-14 right-0 bg-primary-deep/80 backdrop-blur-xl text-white px-5 py-3 rounded-2xl text-[9px] uppercase font-bold tracking-[0.2em] opacity-0 group-hover:opacity-100 transition-all group-hover:-translate-y-2 border border-white/10 shadow-2xl pointer-events-none whitespace-nowrap">
+            <div className="hidden md:block absolute -top-14 right-0 bg-primary-deep/80 backdrop-blur-xl text-white px-5 py-3 rounded-2xl text-[9px] uppercase font-bold tracking-[0.2em] opacity-0 group-hover:opacity-100 transition-all group-hover:-translate-y-2 border border-white/10 shadow-2xl pointer-events-none whitespace-nowrap">
               Connect to EVA Core
             </div>
           </motion.button>
@@ -108,36 +108,36 @@ const EVA = () => {
             initial={{ opacity: 0, y: 30, scale: 0.98, filter: "blur(10px)" }}
             animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
             exit={{ opacity: 0, y: 30, scale: 0.98, filter: "blur(10px)" }}
-            className="w-[420px] bg-primary-deep/80 backdrop-blur-2xl border border-white/10 rounded-[32px] shadow-[0_30px_100px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden h-[600px] ring-1 ring-white/10"
+            className="w-[calc(100vw-32px)] md:w-[420px] bg-primary-deep/80 backdrop-blur-2xl border border-white/10 rounded-[24px] md:rounded-[32px] shadow-[0_30px_100px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden h-[500px] md:h-[600px] ring-1 ring-white/10"
           >
             {/* Header */}
-            <div className="p-8 bg-gradient-to-r from-white/5 to-transparent border-b border-white/5 flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-primary-mist/20 rounded-2xl flex items-center justify-center text-primary-mist">
-                  <Orbit className="animate-spin-slow" size={24} />
+            <div className="p-5 md:p-8 bg-gradient-to-r from-white/5 to-transparent border-b border-white/5 flex items-center justify-between">
+              <div className="flex items-center gap-3 md:gap-4">
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-primary-mist/20 rounded-2xl flex items-center justify-center text-primary-mist">
+                  <Orbit className="animate-spin-slow w-5 h-5 md:w-6 md:h-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-serif italic text-white leading-none mb-1">EVA Assistant</h3>
+                  <h3 className="text-lg md:text-xl font-serif italic text-white leading-none mb-1">EVA Assistant</h3>
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <span className="text-[10px] uppercase font-black tracking-[0.2em] text-white/30">Neural Core Online</span>
+                    <span className="text-[9px] md:text-[10px] uppercase font-black tracking-[0.2em] text-white/30">Neural Core Online</span>
                   </div>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <button onClick={() => setIsOpen(false)} className="p-3 text-white/20 hover:text-white transition-colors">
-                  <Minus size={20} />
+                <button onClick={() => setIsOpen(false)} className="p-2 md:p-3 text-white/20 hover:text-white transition-colors">
+                  <Minus className="w-[18px] h-[18px] md:w-5 md:h-5" />
                 </button>
               </div>
             </div>
 
             {/* Voice Protocol Banner */}
-            <div className="px-8 py-3 bg-primary-mist/5 border-b border-white/5 flex items-center justify-between group transition-all">
+            <div className="px-5 md:px-8 py-2 md:py-3 bg-primary-mist/5 border-b border-white/5 flex items-center justify-between group transition-all">
               <div className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-primary-mist shadow-[0_0_10px_rgba(123,227,214,0.5)] animate-pulse" />
-                <span className="text-[9px] uppercase font-bold tracking-[0.2em] text-primary-mist/60 group-hover:text-primary-mist transition-colors">Emergency Protocol</span>
+                <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-primary-mist shadow-[0_0_10px_rgba(123,227,214,0.5)] animate-pulse" />
+                <span className="text-[8px] md:text-[9px] uppercase font-bold tracking-[0.2em] text-primary-mist/60 group-hover:text-primary-mist transition-colors">Emergency Protocol</span>
               </div>
-              <a href="tel:+91XXXXXXXXXX" className="text-[8px] font-black uppercase tracking-widest px-4 py-2 bg-primary-mist/10 text-primary-mist border border-primary-mist/20 rounded-lg hover:bg-primary-mist hover:text-primary-deep transition-all flex items-center gap-2">
+              <a href="tel:+91XXXXXXXXXX" className="text-[7px] md:text-[8px] font-black uppercase tracking-widest px-3 md:px-4 py-1.5 md:py-2 bg-primary-mist/10 text-primary-mist border border-primary-mist/20 rounded-lg hover:bg-primary-mist hover:text-primary-deep transition-all flex items-center gap-2">
                 Initiate Call <ArrowRight size={10} />
               </a>
             </div>
@@ -145,7 +145,7 @@ const EVA = () => {
             {/* Chat Content */}
             <div 
               ref={scrollRef}
-              className="flex-1 overflow-y-auto p-8 space-y-6 no-scrollbar scrolling-touch"
+              className="flex-1 overflow-y-auto p-5 md:p-8 space-y-4 md:space-y-6 no-scrollbar scrolling-touch"
             >
               {messages.map((m) => (
                 <motion.div
@@ -154,8 +154,8 @@ const EVA = () => {
                   animate={{ opacity: 1, y: 0 }}
                   className={`flex ${m.type === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
-                  <div className={`max-w-[85%] rounded-[24px] px-5 py-4 backdrop-blur-md ${m.type === 'user' ? 'bg-primary-mist text-primary-deep shadow-lg' : 'bg-white/5 text-white/90 border border-white/10'}`}>
-                    <p className="text-[13px] font-light leading-relaxed tracking-wide">{m.text}</p>
+                  <div className={`max-w-[90%] md:max-w-[85%] rounded-[20px] md:rounded-[24px] px-4 md:px-5 py-3 md:py-4 backdrop-blur-md ${m.type === 'user' ? 'bg-primary-mist text-primary-deep shadow-lg' : 'bg-white/5 text-white/90 border border-white/10'}`}>
+                    <p className="text-[12px] md:text-[13px] font-light leading-relaxed tracking-wide">{m.text}</p>
                     <div className={`text-[7px] mt-2 opacity-30 uppercase font-black tracking-[0.2em] ${m.type === 'user' ? 'text-primary-deep text-right' : 'text-white'}`}>
                       {m.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </div>
@@ -165,12 +165,12 @@ const EVA = () => {
             </div>
 
             {/* Neural Pathways (Quick Buttons) */}
-            <div className="px-8 pb-4 flex gap-2 overflow-x-auto no-scrollbar">
+            <div className="px-5 md:px-8 pb-3 md:pb-4 flex gap-2 overflow-x-auto no-scrollbar">
               {neuralPathways.map((path) => (
                 <button
                   key={path}
                   onClick={() => handleSend(path)}
-                  className="shrink-0 px-4 py-2 bg-white/5 border border-white/5 rounded-full text-[9px] font-bold uppercase tracking-widest text-white/40 hover:bg-primary-mist/20 hover:text-primary-mist transition-all"
+                  className="shrink-0 px-3 md:px-4 py-1.5 md:py-2 bg-white/5 border border-white/5 rounded-full text-[8px] md:text-[9px] font-bold uppercase tracking-widest text-white/40 hover:bg-primary-mist/20 hover:text-primary-mist transition-all"
                 >
                   {path}
                 </button>
@@ -178,7 +178,7 @@ const EVA = () => {
             </div>
 
             {/* Input System */}
-            <div className="p-8 pt-0 mt-auto bg-gradient-to-t from-primary-deep to-transparent">
+            <div className="p-5 md:p-8 pt-0 mt-auto bg-gradient-to-t from-primary-deep to-transparent">
               <div className="relative group/input">
                 <input 
                   type="text"
@@ -186,16 +186,16 @@ const EVA = () => {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 focus:outline-none focus:border-primary-mist focus:bg-white/10 transition-all text-[13px] font-light placeholder-white/20"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl md:rounded-2xl px-4 md:px-6 py-4 md:py-5 focus:outline-none focus:border-primary-mist focus:bg-white/10 transition-all text-[12px] md:text-[13px] font-light placeholder-white/20"
                 />
                 <button 
                   onClick={() => handleSend()}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-primary-mist/10 text-primary-mist border border-primary-mist/20 rounded-xl flex items-center justify-center hover:bg-primary-mist hover:text-primary-deep transition-all"
+                  className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 bg-primary-mist/10 text-primary-mist border border-primary-mist/20 rounded-lg md:rounded-xl flex items-center justify-center hover:bg-primary-mist hover:text-primary-deep transition-all"
                 >
-                  <Send size={14} />
+                  <Send className="w-3 h-3 md:w-3.5 md:h-3.5" />
                 </button>
               </div>
-              <div className="mt-4 flex items-center justify-center gap-2">
+              <div className="mt-3 md:mt-4 flex items-center justify-center gap-2">
                 <ShieldCheck size={10} className="text-white/10" />
                 <p className="text-[7px] uppercase font-black tracking-[0.3em] text-white/10">Sovereign Data Secured</p>
               </div>
