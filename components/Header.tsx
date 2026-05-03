@@ -283,81 +283,108 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile Nav */}
+      {/* Mobile Nav Sidebar */}
       <AnimatePresence>
         {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, x: '100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
-            className="lg:hidden fixed top-0 right-0 bottom-0 w-full bg-white z-[100] p-6 overflow-y-auto"
-          >
-            <div className="flex justify-between items-center mb-8">
-               <Link href="/" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-2">
-                  <div className="w-7 h-7 bg-primary-deep rounded-lg flex items-center justify-center text-white font-bold text-xs">T</div>
-                  <span className="text-lg font-serif font-bold text-primary-deep">T-CAFE</span>
-               </Link>
-               <button onClick={() => setIsMenuOpen(false)} className="p-1.5 text-primary-deep"><X size={28} /></button>
-            </div>
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMenuOpen(false)}
+              className="lg:hidden fixed inset-0 bg-primary-deep/60 backdrop-blur-sm z-[90]"
+            />
 
-            {user && (
-              <div className="bg-slate-50 p-5 rounded-[1.5rem] mb-8 border border-slate-100">
-                 <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-2xl bg-primary-mist text-primary-deep flex items-center justify-center text-xl font-bold">
-                      {user.name?.[0]}
-                    </div>
-                    <div>
-                      <h4 className="text-primary-deep font-serif text-lg font-bold leading-tight">{user.name}</h4>
-                      <p className="text-slate-400 text-[10px] font-medium">{user.email}</p>
-                    </div>
-                 </div>
-                 <div className="grid grid-cols-2 gap-3">
-                    <div className="bg-white p-3 rounded-xl border border-slate-100 shadow-sm">
-                       <p className="text-[7px] text-slate-400 font-black uppercase tracking-widest mb-0.5">NXT Tokens</p>
-                       <p className="text-sm font-black text-primary-mist">{walletInfo?.balance?.toLocaleString() || 0}</p>
-                    </div>
-                    <div className="bg-white p-3 rounded-xl border border-slate-100 shadow-sm">
-                       <p className="text-[7px] text-slate-400 font-black uppercase tracking-widest mb-0.5">Tier</p>
-                       <p className="text-sm font-black text-accent-gold">{walletInfo?.membershipTier || 'Free'}</p>
-                    </div>
-                 </div>
+            {/* Sidebar Drawer */}
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="lg:hidden fixed top-0 right-0 bottom-0 w-[85%] max-w-sm bg-white z-[100] shadow-[-20px_0_50px_rgba(0,0,0,0.2)] flex flex-col"
+            >
+              {/* Drawer Header */}
+              <div className="p-6 flex justify-between items-center border-b border-slate-100">
+                <Link href="/" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-2">
+                  <div className="w-8 h-8 bg-gradient-to-br from-primary-mist to-accent-gold rounded-lg flex items-center justify-center text-primary-deep font-bold text-sm shadow-md">T</div>
+                  <span className="text-xl font-serif font-bold text-primary-deep tracking-tight">T-CAFE <span className="text-primary-mist">MIST</span></span>
+                </Link>
+                <button 
+                  onClick={() => setIsMenuOpen(false)} 
+                  className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-primary-deep hover:bg-slate-100 transition-colors"
+                >
+                  <X size={20} />
+                </button>
               </div>
-            )}
 
-            <div className="space-y-4">
-              {navLinks.map((link) => (
-                <div key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-2xl font-serif font-bold text-primary-deep hover:text-primary-mist block"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {link.name}
+              {/* Drawer Content */}
+              <div className="flex-1 overflow-y-auto p-6 no-scrollbar">
+                {/* User card removed as requested */}
+
+                <div className="space-y-1">
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4 pl-2">Navigation</p>
+                  {navLinks.map((link) => (
+                    <div key={link.name}>
+                      <Link
+                        href={link.href}
+                        className={`flex items-center justify-between px-4 py-4 rounded-2xl transition-all ${pathname === link.href ? 'bg-primary-mist/10 text-primary-mist' : 'text-primary-deep hover:bg-slate-50'}`}
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <span className="text-lg font-serif font-bold">{link.name}</span>
+                        <ChevronDown size={16} className="-rotate-90 opacity-30" />
+                      </Link>
+                      {link.dropdown && pathname.startsWith(link.href) && (
+                        <div className="ml-4 mt-1 space-y-1 border-l-2 border-slate-100 pl-4">
+                          {link.dropdown.map(sub => (
+                            <Link 
+                              key={sub.name} 
+                              href={sub.href} 
+                              onClick={() => setIsMenuOpen(false)}
+                              className="block py-2 text-sm font-bold text-slate-400 hover:text-primary-mist"
+                            >
+                              {sub.name}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-8 space-y-1">
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4 pl-2">Account Settings</p>
+                  <Link href="/profile" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-3 px-4 py-4 rounded-2xl text-slate-600 hover:bg-slate-50 transition-all">
+                    <UserIcon size={20} className="text-primary-mist" />
+                    <span className="font-bold text-sm uppercase tracking-widest">My Profile</span>
+                  </Link>
+                  <Link href="/refer" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-3 px-4 py-4 rounded-2xl text-slate-600 hover:bg-slate-50 transition-all">
+                    <Users size={20} className="text-primary-mist" />
+                    <span className="font-bold text-sm uppercase tracking-widest">Refer & Earn</span>
                   </Link>
                 </div>
-              ))}
-            </div>
+              </div>
 
-            <div className="mt-12 space-y-3">
-              {user ? (
-                <div className="grid grid-cols-1 gap-2">
-                  <Link href="/wallet" onClick={() => setIsMenuOpen(false)}>
-                    <button className="w-full py-4 bg-primary-mist/10 text-primary-mist rounded-xl font-black uppercase tracking-[0.2em] text-[9px]">My Wallet</button>
-                  </Link>
+              {/* Drawer Footer */}
+              <div className="p-6 border-t border-slate-100">
+                {user ? (
                   <button 
                     onClick={handleLogout}
-                    className="w-full py-4 text-red-500 font-black uppercase tracking-[0.2em] text-[9px]"
+                    className="w-full py-4 bg-red-50 text-red-500 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] flex items-center justify-center gap-2 hover:bg-red-100 transition-all"
                   >
+                    <LogOut size={16} />
                     Logout Session
                   </button>
-                </div>
-              ) : (
-                <Link href="/login" onClick={() => setIsMenuOpen(false)}>
-                  <button className="w-full py-5 bg-accent-gold text-primary-deep rounded-xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-accent-gold/20">Login / Join</button>
-                </Link>
-              )}
-            </div>
-          </motion.div>
+                ) : (
+                  <Link href="/login" onClick={() => setIsMenuOpen(false)}>
+                    <button className="w-full py-5 bg-gradient-to-r from-primary-mist to-accent-gold text-primary-deep rounded-2xl font-black uppercase tracking-widest text-[11px] shadow-lg shadow-primary-mist/20 hover:scale-[1.02] transition-all">
+                      Login / Join Network
+                    </button>
+                  </Link>
+                )}
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </header>
