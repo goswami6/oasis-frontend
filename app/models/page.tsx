@@ -14,7 +14,7 @@ const ModelsOverviewPage = () => {
       href: "/models/kiosk",
       desc: "Ultra-compact autonomous node engineered for high-traffic corridors and transit hubs.",
       investment: "₹5 L - 10 L",
-      特点: ["Precision Service", "Managed Staffing", "24/7 Operations"],
+      features: ["Precision Service", "Managed Staffing", "24/7 Operations"],
       variant: "Compact"
     },
     {
@@ -24,7 +24,7 @@ const ModelsOverviewPage = () => {
       desc: "High-velocity modular unit designed for urban corporate zones and quick-service efficiency.",
       investment: "₹8 L - 15 L",
       area: "150 - 300 SQFT",
-      特点: ["Modular Tech", "Urban Pulse", "Pulse Cloud Sync"],
+      features: ["Modular Tech", "Urban Pulse", "Pulse Cloud Sync"],
       variant: "Velocity"
     },
     {
@@ -34,7 +34,7 @@ const ModelsOverviewPage = () => {
       desc: "A vibrant urban third-space balancing premium dine-in atmosphere with delivery optimization.",
       investment: "₹15 L - 30 L",
       area: "300 - 800 SQFT",
-      特点: ["Full Menu", "Social Density", "High Throughput"],
+      features: ["Full Menu", "Social Density", "High Throughput"],
       variant: "Popular"
     },
     {
@@ -44,7 +44,7 @@ const ModelsOverviewPage = () => {
       desc: "Lush biophilic experience center integrating restorative technology with premium roastery.",
       investment: "₹40 L - 80 L",
       area: "800 - 1500 SQFT",
-      特点: ["Green Tech", "Biophilic Lounge", "Restorative AI"],
+      features: ["Green Tech", "Biophilic Lounge", "Restorative AI"],
       variant: "Biophilic"
     },
     {
@@ -54,7 +54,7 @@ const ModelsOverviewPage = () => {
       desc: "The pinnacle of cafe luxury. Elite lounge hubs with VIP strategy suites and master rights.",
       investment: "₹1 Cr - 3 Cr",
       area: "1500 - 3000 SQFT",
-      特点: ["Master Franchise", "VIP Strategy Suites", "Elite Advisory"],
+      features: ["Master Franchise", "VIP Strategy Suites", "Elite Advisory"],
       variant: "Elite"
     },
     {
@@ -64,7 +64,7 @@ const ModelsOverviewPage = () => {
       desc: "Instant satisfaction node for quick grab-and-go energy.",
       investment: "₹3 L - 7 L",
       area: "50 - 150 SQFT",
-      特点: ["Micro Footprint", "Zen Restorative", "Molecular Water"],
+      features: ["Micro Footprint", "Zen Restorative", "Molecular Water"],
       variant: "Micro"
     },
     {
@@ -74,7 +74,7 @@ const ModelsOverviewPage = () => {
       desc: "Co-working integrated lifestyle café for the modern professional.",
       investment: "₹60 L - 1.2 Cr",
       area: "1200 - 2000 SQFT",
-      特点: ["Work-Life Fusion", "Tech Pods", "Community Hub"],
+      features: ["Work-Life Fusion", "Tech Pods", "Community Hub"],
       variant: "Lifestyle"
     }
   ];
@@ -177,7 +177,7 @@ const ModelsOverviewPage = () => {
 
                   {/* FEATURES */}
                   <div className="flex flex-wrap gap-3">
-                    {model.features.map((f, idx) => (
+                    {model.features.map((f: string, idx: number) => (
                       <div
                         key={idx}
                         className="text-[10px] uppercase text-primary-deep/50 flex items-center gap-2"
