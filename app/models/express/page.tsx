@@ -306,13 +306,15 @@ const ModelFeatures = () => (
             ].map((item, i) => (
               <div key={i} className="space-y-2 sm:space-y-3 md:space-y-4">
 
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg md:rounded-xl bg-primary-deep/5 flex items-center justify-center text-primary-mist hover:bg-primary-mist hover:text-white transition">
-                  <item.icon size={18} className="sm:size-[20px] md:size-[24px]" />
-                </div>
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg md:rounded-xl bg-primary-deep/5 flex items-center justify-center text-primary-mist hover:bg-primary-mist hover:text-white transition shrink-0">
+                    <item.icon size={18} className="sm:size-[20px] md:size-[24px]" />
+                  </div>
 
-                <h4 className="text-sm sm:text-base md:text-lg font-serif uppercase">
-                  {item.title}
-                </h4>
+                  <h4 className="text-sm sm:text-base md:text-lg font-serif uppercase">
+                    {item.title}
+                  </h4>
+                </div>
 
                 <p className="text-[11px] sm:text-xs md:text-sm opacity-50 leading-relaxed">
                   {item.desc}

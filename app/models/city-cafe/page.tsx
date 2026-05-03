@@ -50,7 +50,7 @@ const MenuArchitecture = () => {
               className="group"
             >
               <div className="relative h-72 rounded-[48px] overflow-hidden mb-6 border border-primary-deep/5 shadow-xl transition-all duration-700 group-hover:scale-95">
-                <Image 
+                <Image
                   src={item.image}
                   alt={item.name}
                   fill
@@ -98,7 +98,7 @@ const MediaHub = () => {
             >
               {item.type === "video" ? (
                 <div className="absolute inset-0 cursor-pointer">
-                  <NextImage 
+                  <NextImage
                     src={item.src}
                     alt="City Cafe Video Showcase"
                     fill
@@ -117,7 +117,7 @@ const MediaHub = () => {
                 </div>
               ) : (
                 <div className="absolute inset-0">
-                  <NextImage 
+                  <NextImage
                     src={item.src}
                     alt={`City Cafe Detail ${i}`}
                     fill
@@ -138,50 +138,105 @@ const MediaHub = () => {
 };
 
 const ModelFeatures = () => (
-  <section className="py-20 bg-white text-primary-deep relative overflow-hidden">
-    <div className="max-w-[1400px] mx-auto px-6 md:px-10">
-      <div className="grid lg:grid-cols-2 gap-24 items-center">
+  <section className="py-12 sm:py-16 md:py-20 bg-white text-primary-deep relative overflow-hidden">
+    <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-10">
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-14 md:gap-20 lg:gap-24 items-center">
+
+        {/* LEFT CONTENT */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
         >
-          <span className="text-accent-gold font-bold tracking-[0.3em] uppercase text-[11px] mb-6 block">Model Density</span>
-          <h2 className="text-3xl md:text-5xl font-serif italic mb-10 leading-tight">Prime Urban <br /><span className="text-primary-mist not-italic underline decoration-primary-mist/20 underline-offset-8">Third Space.</span></h2>
-          <p className="text-primary-deep/60 text-lg font-light leading-relaxed mb-12">
+          <span className="text-accent-gold tracking-[0.25em] sm:tracking-[0.3em] uppercase text-[9px] sm:text-[10px] md:text-[11px] mb-4 sm:mb-6 block">
+            Model Density
+          </span>
+
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-serif italic mb-6 sm:mb-8 md:mb-10 leading-tight">
+            Prime Urban <br />
+            <span className="text-primary-mist not-italic underline decoration-primary-mist/20 underline-offset-4 md:underline-offset-8">
+              Third Space.
+            </span>
+          </h2>
+
+          <p className="text-primary-deep/60 text-sm sm:text-base md:text-lg font-light leading-relaxed mb-8 sm:mb-10 md:mb-12">
             Choosing the City Cafe model is the best decision for premium urban locations. The balance between dine-in atmosphere and delivery efficiency is perfectly engineered for the modern metropolitan member.
           </p>
-          <div className="grid grid-cols-2 gap-8">
+
+          {/* FEATURES GRID */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
             {[
-              { icon: Utensils, title: "Full Menu", desc: "Access to the complete OASIS T-CAFE chai, coffee, and snack range." },
-              { icon: Users, title: "Community Hub", desc: "Designed for social density and professional human connections." },
-              { icon: MapPin, title: "Prime Density", desc: "Engineered for high-footfall regional urban districts." },
-              { icon: Globe, title: "Global Standard", desc: "Interior architecture inspired by world-class lifestyle centers." }
+              {
+                icon: Utensils,
+                title: "Full Menu",
+                desc: "Access to the complete OASIS T-CAFE chai, coffee, and snack range."
+              },
+              {
+                icon: Users,
+                title: "Community Hub",
+                desc: "Designed for social density and professional human connections."
+              },
+              {
+                icon: MapPin,
+                title: "Prime Density",
+                desc: "Engineered for high-footfall regional urban districts."
+              },
+              {
+                icon: Globe,
+                title: "Global Standard",
+                desc: "Interior architecture inspired by world-class lifestyle centers."
+              }
             ].map((item, i) => (
-              <div key={i} className="space-y-4">
-                <div className="w-12 h-12 rounded-xl bg-primary-deep/5 flex items-center justify-center text-primary-mist transition-colors hover:bg-primary-mist hover:text-white">
-                  <item.icon size={24} />
+              <div key={i} className="space-y-3 sm:space-y-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary-deep/5 flex items-center justify-center text-primary-mist transition-colors hover:bg-primary-mist hover:text-white shrink-0">
+                    <item.icon size={20} className="sm:size-[24px]" />
+                  </div>
+                  <h4 className="font-serif text-base sm:text-lg uppercase tracking-tight">
+                    {item.title}
+                  </h4>
                 </div>
-                <h4 className="font-serif text-lg uppercase tracking-tight">{item.title}</h4>
-                <p className="text-sm opacity-40 leading-relaxed font-light">{item.desc}</p>
+
+                <p className="text-xs sm:text-sm text-primary-deep/50 leading-relaxed font-light">
+                  {item.desc}
+                </p>
               </div>
             ))}
           </div>
         </motion.div>
 
-        <div className="relative h-[650px] rounded-[64px] border border-primary-deep/5 overflow-hidden group shadow-3xl bg-[#FAF9F6]">
-          <NextImage
-            src="/assets/lounge_plus_branded_1.png"
-            alt="Oasis City Cafe View"
-            fill
-            className="object-cover transition-transform duration-1000 group-hover:scale-110 opacity-90"
-          />
-          <div className="absolute inset-0 bg-primary-deep/5" />
-          <div className="absolute bottom-10 right-10 p-10 bg-white/95 backdrop-blur-xl rounded-[40px] text-primary-deep shadow-2xl border border-primary-deep/5">
-            <div className="text-4xl font-serif mb-1 uppercase tracking-tighter text-primary-deep">60 Days</div>
-            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary-deep/40">From Genesis to Launch</p>
+        {/* RIGHT IMAGE */}
+        <div className="relative">
+
+          <div className="relative h-[280px] sm:h-[400px] md:h-[550px] lg:h-[650px] rounded-2xl sm:rounded-3xl md:rounded-[64px] border border-primary-deep/5 overflow-hidden group shadow-xl md:shadow-3xl bg-[#FAF9F6]">
+
+            <NextImage
+              src="/assets/lounge_plus_branded_1.png"
+              alt="Oasis City Cafe View"
+              fill
+              className="object-cover transition-transform duration-700 md:duration-1000 group-hover:scale-110 opacity-90"
+            />
+
+            <div className="absolute inset-0 bg-primary-deep/5" />
+
+            {/* FLOATING BOX */}
+            <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 md:bottom-10 md:right-10 p-4 sm:p-6 md:p-10 bg-white/95 backdrop-blur-xl rounded-xl sm:rounded-2xl md:rounded-[40px] text-primary-deep shadow-xl md:shadow-2xl border border-primary-deep/5">
+
+              <div className="text-xl sm:text-2xl md:text-4xl font-serif mb-1 uppercase tracking-tighter">
+                60 Days
+              </div>
+
+              <p className="text-[8px] sm:text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] md:tracking-[0.3em] text-primary-deep/40">
+                From Genesis to Launch
+              </p>
+
+            </div>
+
           </div>
+
         </div>
+
       </div>
     </div>
   </section>
@@ -253,17 +308,17 @@ const CustomerReviews = () => (
 
       <div className="grid md:grid-cols-2 gap-12">
         {[
-          { 
-            name: "Neha Sharma", 
-            role: "City Cafe Partner", 
+          {
+            name: "Neha Sharma",
+            role: "City Cafe Partner",
             quote: "The City Cafe model redefined our local market. The balance between dine-in atmosphere and delivery efficiency is perfectly engineered for urban professionals.",
-            metrics: "35% MoM Profitability" 
+            metrics: "35% MoM Profitability"
           },
-          { 
-            name: "Arjun Khanna", 
-            role: "Tech Park Asset Owner", 
+          {
+            name: "Arjun Khanna",
+            role: "Tech Park Asset Owner",
             quote: "By integrating the City Cafe into our corporate cluster, we&apos;ve secured a 90% member retention rate. The brand&apos;s tech-forward aesthetic is a huge draw.",
-            metrics: "18-Month ROI" 
+            metrics: "18-Month ROI"
           }
         ].map((rev, i) => (
           <motion.div
@@ -313,7 +368,7 @@ const FAQSection = () => {
         <div className="space-y-6">
           {faqs.map((faq, i) => (
             <div key={i} className="border border-white/10 rounded-3xl overflow-hidden hover:border-primary-mist/30 transition-colors">
-              <button 
+              <button
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
                 className="w-full p-10 flex items-center justify-between text-left group"
               >
@@ -358,35 +413,68 @@ const CityCafePage = () => {
     <>
 
       {/* Hero */}
-      <section className="relative pt-40 pb-20 bg-primary-deep overflow-hidden">
+      <section className="relative pt-24 sm:pt-28 md:pt-36 lg:pt-40 pb-12 sm:pb-16 md:pb-20 bg-primary-deep overflow-hidden">
+
+        {/* BACKGROUND */}
         <div className="absolute inset-0 z-0">
           <NextImage
             src="/assets/oasis_citycafe_main.png"
             alt="Oasis City Cafe Hero"
             fill
-            className="object-cover opacity-60"
+            priority
+            className="object-cover opacity-50 md:opacity-60"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-primary-deep via-primary-deep/60 to-transparent" />
+
+          {/* OVERLAYS */}
+          <div className="absolute inset-0 bg-gradient-to-r from-primary-deep via-primary-deep/70 md:via-primary-deep/60 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-t from-primary-deep via-transparent to-transparent" />
         </div>
 
-        <div className="max-w-[1400px] mx-auto px-6 md:px-10 relative z-10">
+        {/* CONTENT */}
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-10 relative z-10">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1 }}
-            className="max-w-4xl"
+            className="max-w-xl sm:max-w-2xl md:max-w-4xl"
           >
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-white mb-6 uppercase tracking-tight">
+
+            {/* HEADING */}
+            <h1 className="
+            font-serif text-white uppercase tracking-tight leading-[1.1]
+            text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl
+            mb-4 md:mb-6
+          ">
               Oasis City Cafe
             </h1>
-            <div className="flex items-center gap-3 text-xs md:text-sm font-bold tracking-[0.3em] uppercase">
-              <Link href="/" className="text-white/40 hover:text-primary-mist transition-colors">Home</Link>
-              <span className="text-white/20">/</span>
-              <Link href="/models" className="text-white/40 hover:text-primary-mist transition-colors">Models</Link>
-              <span className="text-white/20">/</span>
-              <span className="text-primary-mist">City Cafe</span>
+
+            {/* BREADCRUMB */}
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-[10px] sm:text-xs md:text-sm font-bold tracking-[0.2em] md:tracking-[0.3em] uppercase">
+
+              <Link
+                href="/"
+                className="text-white/50 hover:text-primary-mist transition-colors"
+              >
+                Home
+              </Link>
+
+              <span className="text-white/30">/</span>
+
+              <Link
+                href="/models"
+                className="text-white/50 hover:text-primary-mist transition-colors"
+              >
+                Models
+              </Link>
+
+              <span className="text-white/30">/</span>
+
+              <span className="text-primary-mist">
+                City Cafe
+              </span>
+
             </div>
+
           </motion.div>
         </div>
       </section>
