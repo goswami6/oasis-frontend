@@ -4,12 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import NextImage from "next/image";
 import Link from "next/link";
-import { 
-  Zap, Coffee, Building2, Layers, ArrowRight, 
-  TrendingUp, Wallet, ShieldCheck, MapPin,
-  Clock, CheckCircle2, ChevronRight
-} from "lucide-react";
-
+import { ArrowRight } from "lucide-react";
 
 const ModelsOverviewPage = () => {
   const models = [
@@ -87,133 +82,149 @@ const ModelsOverviewPage = () => {
   return (
     <>
 
-      {/* Hero Section */}
-      <section className="relative pt-40 pb-20 bg-primary-deep overflow-hidden">
-        <div className="absolute inset-0 z-0 opacity-40">
-          <NextImage
-            src="/assets/cafe_models.png"
-            alt="Business Models Background"
-            fill
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-primary-deep via-primary-deep/60 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary-deep via-transparent to-transparent" />
-        </div>
-
-        <div className="max-w-[1400px] mx-auto px-6 md:px-10 relative z-10 w-full">
+      {/* HERO */}
+      <section className="relative pt-32 md:pt-40 pb-16 md:pb-20 bg-primary-mist">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-10 text-primary-deep">
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1 }}
-            className="max-w-4xl"
+            className="max-w-3xl"
           >
-            <span className="text-primary-mist font-bold tracking-[0.4em] uppercase text-[10px] md:text-[11px] mb-8 block">The OASIS Architecture</span>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-white mb-8 uppercase tracking-tight">
-              Business <br />
-              <span className="text-primary-mist italic">Models.</span>
-            </h1>
-            
-            <div className="flex items-center gap-3 text-xs md:text-sm font-bold tracking-[0.3em] uppercase mb-12">
-              <Link href="/" className="text-white/40 hover:text-primary-mist transition-colors">Home</Link>
-              <span className="text-white/20">/</span>
-              <span className="text-primary-mist">Models</span>
-            </div>
+            <span className="text-primary-deep/60 tracking-[0.3em] uppercase text-[10px] mb-4 block font-bold">
+              The OASIS Architecture
+            </span>
 
-            <p className="max-w-2xl text-white/40 text-base md:text-xl font-light leading-relaxed">
-              From managed precision nodes to elite luxury lounges, our multi-format ecosystem is designed for market domination and technical excellence.
+            <h1 className="text-3xl sm:text-5xl md:text-7xl font-serif text-primary-deep mb-6 leading-tight">
+              Business <br />
+              <span className="text-black italic">Models.</span>
+            </h1>
+
+            <p className="text-primary-deep/80 text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl">
+              From compact nodes to luxury lounges — engineered for scalability and profitability.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Models Grid */}
-      <section className="py-16 md:py-20">
-        <div className="max-w-[1400px] mx-auto px-6 md:px-10">
-          <div className="grid lg:grid-cols-2 gap-12 md:gap-20">
+      {/* MODELS GRID */}
+      <section className="py-12 sm:py-16 md:py-20 bg-white">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-10">
+
+          <div className="grid md:grid-cols-2 gap-10 md:gap-16">
+
             {models.map((model, i) => (
               <motion.div
                 key={model.title}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: i * 0.1 }}
+                transition={{ delay: i * 0.1 }}
                 viewport={{ once: true }}
                 className="group"
               >
-                <div className="relative aspect-[16/10] rounded-[48px] overflow-hidden shadow-3xl mb-10 border border-primary-deep/5 transition-transform duration-700 group-hover:scale-[1.02]">
+
+                {/* IMAGE */}
+                <div className="relative h-56 sm:h-64 md:h-80 rounded-2xl md:rounded-[40px] overflow-hidden mb-6 border border-primary-deep/5 shadow-lg">
                   <NextImage
                     src={model.image}
                     alt={model.title}
                     fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary-deep/60 via-transparent to-transparent opacity-60" />
-                  <div className="absolute top-8 left-8">
-                    <span className="bg-white/90 backdrop-blur-md text-primary-deep px-5 py-2.5 rounded-full text-[9px] font-black uppercase tracking-widest shadow-xl">
-                      {model.variant}
-                    </span>
-                  </div>
                 </div>
 
-                <div className="px-4">
-                  <div className="flex items-end justify-between mb-8">
-                    <div>
-                      <h2 className="text-4xl md:text-5xl font-serif text-primary-deep mb-4 group-hover:text-primary-mist transition-colors">{model.title}</h2>
-                      <p className="text-primary-deep/50 text-base md:text-lg font-light leading-relaxed max-w-lg mb-8">
-                        {model.desc}
-                      </p>
-                    </div>
-                    <Link href={model.href} className="w-16 h-16 rounded-full bg-primary-deep text-white flex items-center justify-center hover:bg-primary-mist hover:text-primary-deep transition-all duration-500 shadow-xl group/btn">
-                      <ArrowRight className="group-hover/btn:translate-x-2 transition-transform" />
+                {/* CONTENT */}
+                <div className="px-1 sm:px-2">
+
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-serif text-primary-deep">
+                      {model.title}
+                    </h2>
+
+                    <Link
+                      href={model.href}
+                      className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full bg-primary-deep text-white hover:bg-primary-mist hover:text-primary-deep transition"
+                    >
+                      <ArrowRight size={16} />
                     </Link>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-6 pb-10 border-b border-primary-deep/5">
-                    <div className="p-8 bg-white rounded-3xl border border-primary-deep/5 shadow-xl hover:shadow-2xl transition-all">
-                       <span className="text-[10px] uppercase font-bold text-primary-deep/30 block mb-2 tracking-widest">Initial Investment</span>
-                       <span className="text-3xl font-serif text-primary-deep">{model.investment}</span>
+                  <p className="text-primary-deep/60 text-sm md:text-base mb-6 leading-relaxed">
+                    {model.desc}
+                  </p>
+
+                  {/* STATS */}
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+
+                    <div className="p-4 sm:p-6 bg-[#FAF9F6] rounded-xl border">
+                      <span className="text-[9px] uppercase text-primary-deep/40 block mb-1">
+                        Investment
+                      </span>
+                      <span className="text-lg sm:text-xl font-serif">
+                        {model.investment}
+                      </span>
                     </div>
-                    <div className="p-8 bg-white rounded-3xl border border-primary-deep/5 shadow-xl hover:shadow-2xl transition-all">
-                       <span className="text-[10px] uppercase font-bold text-primary-deep/30 block mb-2 tracking-widest">Optimal Area</span>
-                       <span className="text-3xl font-serif text-primary-deep">{model.area}</span>
+
+                    <div className="p-4 sm:p-6 bg-[#FAF9F6] rounded-xl border">
+                      <span className="text-[9px] uppercase text-primary-deep/40 block mb-1">
+                        Area
+                      </span>
+                      <span className="text-lg sm:text-xl font-serif">
+                        {model.area}
+                      </span>
                     </div>
+
                   </div>
 
-                  <div className="flex flex-wrap gap-4 py-8">
-                    {model.特点.map((item, idx) => (
-                      <div key={idx} className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary-deep/40">
-                         <div className="w-1.5 h-1.5 rounded-full bg-primary-mist" /> {item}
+                  {/* FEATURES */}
+                  <div className="flex flex-wrap gap-3">
+                    {model.features.map((f, idx) => (
+                      <div
+                        key={idx}
+                        className="text-[10px] uppercase text-primary-deep/50 flex items-center gap-2"
+                      >
+                        <div className="w-1 h-1 bg-primary-mist rounded-full" />
+                        {f}
                       </div>
                     ))}
                   </div>
+
                 </div>
+
               </motion.div>
             ))}
+
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-primary-deep text-white">
-        <div className="max-w-[1400px] mx-auto px-6 md:px-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-6xl font-serif italic mb-10 leading-tight">Ready to Secure Your <br /><span className="text-primary-mist not-italic underline underline-offset-8 decoration-white/10">Regional Node?</span></h2>
-            <p className="text-white/40 text-xl font-light leading-relaxed mb-16">
-              Our regional expansion team is ready to evaluate your territory and assist in choosing the optimal business model for your cluster.
-            </p>
-            <div className="flex flex-wrap justify-center gap-8">
-              <Link href="/franchise">
-                <button className="bg-primary-mist text-primary-deep px-16 py-8 rounded-full font-black uppercase tracking-[0.3em] text-xs hover:bg-white transition-all shadow-3xl">
-                  Initiate Onboarding
-                </button>
-              </Link>
-              <Link href="/contact">
-                <button className="border border-white/20 text-white px-16 py-8 rounded-full font-black uppercase tracking-[0.3em] text-xs hover:bg-white hover:text-primary-deep transition-all">
-                  Contact Advisory
-                </button>
-              </Link>
-            </div>
+      {/* CTA */}
+      <section className="py-12 sm:py-16 md:py-20 bg-[#FAF9F6]">
+        <div className="max-w-[1000px] mx-auto px-4 sm:px-6 text-center">
+
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-serif mb-6">
+            Ready to Start?
+          </h2>
+
+          <p className="text-primary-deep/60 text-sm sm:text-base md:text-lg mb-8">
+            Choose your model and start your journey with OASIS ecosystem.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+
+            <Link href="/franchise">
+              <button className="px-8 py-3 bg-primary-mist text-primary-deep rounded-full text-xs uppercase font-bold">
+                Get Started
+              </button>
+            </Link>
+
+            <Link href="/contact">
+              <button className="px-8 py-3 border border-primary-deep/20 rounded-full text-xs uppercase">
+                Contact
+              </button>
+            </Link>
+
           </div>
+
         </div>
       </section>
 
