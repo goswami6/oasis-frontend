@@ -98,5 +98,31 @@ export const api = {
       });
       return res.json();
     },
+    recharge: async (userId: string, amount: number) => {
+      const res = await fetch(`${BASE_URL}/user/${userId}/recharge`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount }),
+      });
+      return res.json();
+    },
+  },
+  payment: {
+    createOrder: async (amount: number) => {
+      const res = await fetch(`${BASE_URL}/payment/create-order`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount }),
+      });
+      return res.json();
+    },
+    verify: async (data: any) => {
+      const res = await fetch(`${BASE_URL}/payment/verify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      return res.json();
+    },
   },
 };

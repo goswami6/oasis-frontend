@@ -10,7 +10,7 @@ import {
   BarChart3, ArrowUpRight, Award, Crown, ShieldCheck,
   Globe, Phone, MapPin, Plus, Minus, Mail,
   Wifi, Scissors, MessageSquare, Clock, Check, X, Lock as LockIcon,
-  Star, Medal, Gem, Calendar, Newspaper, ExternalLink
+  Star, Medal, Gem, Calendar, Newspaper, ExternalLink, Briefcase, CheckCircle2
 } from "lucide-react";
 import { api } from "@/utility/api";
 
@@ -967,9 +967,54 @@ const TokenPayment = () => {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      setUser(parsedUser);
+      fetchBalance(parsedUser.id || parsedUser._id);
+    }
+  }, []);
+
+  const fetchBalance = async (userId: string) => {
+    try {
+      const res = await api.user.getWalletBalance(userId);
+      if (res.success) setWalletBalance(res.balance);
+    } catch (e) { console.error(e); }
+  };
+
+  const handlePay = async () => {
+    if (!user) {
+      alert("Please login first");
+      return;
+    }
+
+    if (walletBalance < 50000) {
+      setErrorMessage("Insufficient tokens. Please recharge your wallet.");
+      setStatus("error");
+      return;
+    }
+
+    setStatus("loading");
+    try {
+      const res = await api.user.payWithWallet(user.id || user._id, 50000);
+      if (res.success) {
+        setStatus("success");
+        setWalletBalance(res.newBalance);
+        setTimeout(() => setShowModal(false), 2000);
+      } else {
+        setErrorMessage(res.message || "Payment failed");
+        setStatus("error");
+      }
+    } catch (e) {
+      setErrorMessage("Network error occurred");
+      setStatus("error");
+    }
+  };
+
   const benefits = [
     { icon: <ShieldCheck size={20} />, title: "Territory Lockdown", desc: "Instant pin-code protection for your preferred zone." },
-    { icon: <MessageSquare size={20} />, title: "Strategic Access", desc: "Priority 1-on-1 strategy call with the founding team." },
+    { icon: <Briefcase size={20} />, title: "Strategic Access", desc: "Priority 1-on-1 strategy call with the founding team." },
     { icon: <ArrowUpRight size={20} />, title: "Professional Survey", desc: "Expert technical evaluation of your proposed site." },
   ];
 
@@ -1004,20 +1049,43 @@ const TokenPayment = () => {
               <div className="bg-slate-50 border border-slate-100 rounded-xl md:rounded-2xl p-4 md:p-6 mb-6 md:mb-8 space-y-4">
                 <div className="flex justify-between text-xs md:text-sm">
                   <span className="text-slate-500 uppercase tracking-widest text-[9px] md:text-[10px]">
-                    Required Tokens
+                    Payable Amount
                   </span>
-                  <span className="font-bold text-primary-deep">50,000</span>
+                  <span className="font-bold text-primary-deep">50,000 <span className="text-[10px] font-normal">NXT</span></span>
                 </div>
-                <div className="flex justify-between text-xs md:text-sm border-t pt-3">
+                <div className="flex justify-between text-xs md:text-sm border-t border-slate-100 pt-3">
                   <span className="text-slate-500 uppercase tracking-widest text-[9px] md:text-[10px]">
-                    Wallet Balance
+                    Your Wallet
                   </span>
-                  <span className="font-bold">{walletBalance}</span>
+                  <span className={`font-bold ${walletBalance < 50000 ? 'text-red-500' : 'text-emerald-500'}`}>
+                    {walletBalance.toLocaleString()} <span className="text-[10px] font-normal">NXT</span>
+                  </span>
                 </div>
               </div>
 
-              <button className="w-full py-3 md:py-5 rounded-xl bg-primary-deep text-white text-xs md:text-sm">
-                Pay Tokens
+              {status === "error" && (
+                <div className="mb-4 p-3 bg-red-50 text-red-500 text-[10px] font-bold uppercase text-center rounded-lg">
+                  {errorMessage}
+                </div>
+              )}
+
+              {status === "success" && (
+                <div className="mb-4 p-3 bg-emerald-50 text-emerald-600 text-[10px] font-bold uppercase text-center rounded-lg flex items-center justify-center gap-2">
+                  <CheckCircle2 size={14} />
+                  Payment Successful
+                </div>
+              )}
+
+              <button 
+                onClick={handlePay}
+                disabled={status === "loading" || status === "success" || walletBalance < 50000}
+                className={`w-full py-3 md:py-5 rounded-xl font-black uppercase tracking-widest text-[10px] transition-all ${
+                  walletBalance < 50000 
+                  ? 'bg-slate-100 text-slate-400 cursor-not-allowed' 
+                  : 'bg-primary-deep text-white hover:bg-primary-mist hover:text-primary-deep'
+                }`}
+              >
+                {status === "loading" ? "Processing..." : "Pay with NXT Tokens"}
               </button>
             </motion.div>
           </div>
